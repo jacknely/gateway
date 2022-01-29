@@ -1,0 +1,6 @@
+{
+  "USE_SENTRY": true,
+  "USE_DATADOG": true,
+  "TEST_CONFIG": "foobar",
+  "TESTING": true
+}

@@ -1,0 +1,13 @@
+flask
+flake8
+flake8-docstrings
+flask-graphql
+graphene
+gunicorn
+mypy
+pylint
+pytest
+pytest-cov
+python-json-logger
+requests
+responses

@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+  service:
+    build: .
+    environment:
+      APPLICATION_STAGE: dev
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/app
+    command: gunicorn -c /app/config/gunicorn/dev.py service:app

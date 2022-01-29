@@ -1,0 +1,6 @@
+{
+  "USE_SENTRY": false,
+  "SENTRY_TEAM_TAG": "digops",
+  "USE_DATADOG": false,
+  "LOG_LEVEL": "DEBUG"
+}
