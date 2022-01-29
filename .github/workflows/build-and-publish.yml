@@ -16,6 +16,11 @@ jobs:
 
     # steps to perform in job
     steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "{{ env.BRANCH_NAME}}"
+
+        id: extract_branch
       - name: Checkout code
         uses: actions/checkout@v2
 
