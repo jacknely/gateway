@@ -40,10 +40,10 @@ defaults:
       - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v2
         with:
-          file: Dockerfile
+          # relative path to the place where source code with Dockerfile is located
           context: .
           # Note: tags has to be all lower-case
-          tags: v1, latest
+          tags: latest
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 
