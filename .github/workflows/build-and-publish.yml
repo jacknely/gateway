@@ -6,13 +6,13 @@ on:
   pull_request:
 
 jobs:
-
-  if: GitHub.ref == 'refs/heads/main' || GitHub.event_name == 'release'
   build-and-push:
     name: Build Docker image and push to repositories
     runs-on: ubuntu-latest
     env:
       IMAGE: jacknely/gateway
+    
+    if: GitHub.ref == 'refs/heads/main' || GitHub.event_name == 'release'
     steps:
         - name: Generate build ID
           id: prep
