@@ -17,3 +17,9 @@ pytest:
 
 analyse:
 	docker-compose run service sh -c 'pylint --ignore tests --exit-zero service'
+
+apply:
+	helm upgrade --install gateway ./helm -f ./helm/values.yaml
+
+delete:
+	helm delete gateway
