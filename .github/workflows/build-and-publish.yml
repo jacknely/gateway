@@ -52,6 +52,7 @@ jobs:
               latest=false
         
         - name: Build image and push to Docker Hub
+          needs: [tag]
           uses: docker/build-push-action@v2
           with:
             context: .
