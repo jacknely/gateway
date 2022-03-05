@@ -6,20 +6,6 @@ on:
   pull_request:
 
 jobs:
-  tag:
-    name: Tag
-    runs-on: ubuntu-latest
-    outputs:
-      new_tag: ${{ steps.tag_version.outputs.new_tag }}
-    steps:
-      - uses: actions/checkout@v2
-      - name: Bump version and push tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v5.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag_prefix: ""
-
   build-and-push-docker-image:
   
     name: Build Docker image and push to repositories
@@ -27,6 +13,14 @@ jobs:
 
     if: GitHub.ref == 'refs/heads/main' || GitHub.event_name == 'release'
     steps:
+        - name: Generate build ID
+          id: prep
+          run: |
+              branch=${GITHUB_REF##*/}
+              sha=${GITHUB_SHA::8}
+              ts=$(date +%s)
+              echo "::set-output name=BUILD_ID::${branch}-${sha}-${ts}" 
+  
         - name: Checkout code
           uses: actions/checkout@v2
 
@@ -56,7 +50,7 @@ jobs:
           with:
             context: .
             push: ${{ GitHub.event_name != 'pull_request' }}
-            tags: ${{tag.outputs.new_tag}}
+            tags: jacknely/gateway:${{ steps.prep.outputs.BUILD_ID }}
             labels: ${{ steps.meta.outputs.labels }}
 
         - name: Image digest
