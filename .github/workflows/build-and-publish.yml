@@ -6,12 +6,13 @@ on:
   pull_request:
 
 jobs:
-  build-and-push-docker-image:
-  
+
+  if: GitHub.ref == 'refs/heads/main' || GitHub.event_name == 'release'
+  build-and-push:
     name: Build Docker image and push to repositories
     runs-on: ubuntu-latest
-
-    if: GitHub.ref == 'refs/heads/main' || GitHub.event_name == 'release'
+    env:
+      IMAGE: jacknely/gateway
     steps:
         - name: Generate build ID
           id: prep
@@ -38,7 +39,7 @@ jobs:
           id: meta
           uses: crazy-max/ghaction-docker-meta@v2
           with:
-            images: jacknely/gateway
+            images: ${{ env.IMAGE }}
             tags: |
               type=raw,value=latest,enable=${{ endsWith(GitHub.ref, 'main') }}
               type=ref,event=tag
@@ -50,7 +51,7 @@ jobs:
           with:
             context: .
             push: ${{ GitHub.event_name != 'pull_request' }}
-            tags: jacknely/gateway:${{ steps.prep.outputs.BUILD_ID }}
+            tags: ${{ env.IMAGE }}:${{ steps.prep.outputs.BUILD_ID }}
             labels: ${{ steps.meta.outputs.labels }}
 
         - name: Image digest
