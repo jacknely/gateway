@@ -11,7 +11,7 @@ jobs:
     name: Build Docker image and push to repositories
     runs-on: ubuntu-latest
 
-    if: GitHub.ref == 'refs/heads/master' || GitHub.event_name == 'release'
+    if: GitHub.ref == 'refs/heads/main' || GitHub.event_name == 'release'
     steps:
         - name: Checkout code
           uses: actions/checkout@v2
@@ -39,7 +39,7 @@ jobs:
           with:
             images: jacknely/gateway
             tags: |
-              type=raw,value=latest,enable=${{ endsWith(GitHub.ref, 'master') }}
+              type=raw,value=latest,enable=${{ endsWith(GitHub.ref, 'main') }}
               type=ref,event=tag
             flavor: |
               latest=false
