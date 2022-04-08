@@ -22,9 +22,20 @@ spec:
           command: ["gunicorn", "-c", "/app/config/gunicorn/gunicorn-config.py", "service:app"]
           ports:
           - containerPort: {{ .Values.container.port }}       
+          {{- if or $.Values.env $.Values.envSecrets }}
           env:
-          - name: "APPLICATION_STAGE"
-            value: {{ .Values.stage | quote }}         
+            {{- range $key, $value := $.Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- range $key, $secret := $.Values.envSecrets }}
+            - name: {{ $key }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secret }}
+                  key: {{ $key | quote }}
+            {{- end }}
+          {{- end }}         
           volumeMounts:
           - name: gunicorn-config
             mountPath: /app/config/gunicorn/gunicorn-config.py
