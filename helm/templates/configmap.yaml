@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "{{ .Values.app_name }}-gunicorn-config"
+  name: "{{ .Values.name }}-gunicorn-config"
 data:
   gunicorn-config.py: |
     bind = '0.0.0.0:8000'

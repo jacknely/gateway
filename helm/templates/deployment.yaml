@@ -2,27 +2,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.app_name }}
+  name: {{ .Values.name }}
   labels:
-    app: {{ .Values.app_name }}
+    app: {{ .Values.name }}
 
 spec:
   selector:
     matchLabels:
-      app: {{ .Values.app_name }}
+      app: {{ .Values.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.app_name }}
+        app: {{ .Values.name }}
     
     spec:  
       containers:
-
-        - name: {{ .Values.app_name }}
+        - name: {{ .Values.name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           command: ["gunicorn", "-c", "/app/config/gunicorn/gunicorn-config.py", "service:app"]
           ports:
-          - containerPort: 8000         
+          - containerPort: {{ .Values.container.port }}       
           env:
           - name: "APPLICATION_STAGE"
             value: {{ .Values.stage | quote }}         
@@ -33,11 +32,11 @@ spec:
           livenessProbe:
             httpGet:
               path: /health
-              port: 8000
+              port: {{ .Values.container.port }}
           readinessProbe:
             httpGet:
               path: /health
-              port: 8000
+              port: {{ .Values.container.port }}
           lifecycle:
             preStop:
               exec:
@@ -50,4 +49,4 @@ spec:
       volumes:
       - name: gunicorn-config
         configMap:
-          name: "{{ .Values.app_name }}-gunicorn-config"
+          name: "{{ .Values.name }}-gunicorn-config"
