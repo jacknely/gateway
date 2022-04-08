@@ -2,6 +2,7 @@
 import logging
 import os
 import sys
+import json
 
 import graphene
 from flask import Flask
@@ -41,9 +42,19 @@ def _configure_app(app: Flask, env: str) -> None:
     app_path = os.path.dirname(os.path.abspath(__file__))
     config_path = os.path.join(app_path, 'config')
 
-    app.config.from_json(os.path.join(f'{config_path}/base.json'))
-    app.config.from_json(os.path.join(f'{config_path}/{env}.json'), True)
-    app.config.from_json(os.path.join(f'{config_path}/local.json'), True)
+    app.config.from_file(
+        filename=os.path.join(f'{config_path}/base.json'), load=json.load
+    )
+    app.config.from_file(
+        filename=os.path.join(f'{config_path}/{env}.json'),
+        load=json.load,
+        silent=True
+    )
+    app.config.from_file(
+        filename=os.path.join(f'{config_path}/local.json'),
+        load=json.load,
+        silent=True
+    )
 
 
 def _configure_logging(app: Flask) -> None:
