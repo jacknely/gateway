@@ -37,14 +37,13 @@ jobs:
 
         - name: Docker meta
           id: meta
-          uses: docker/metadata-action@v3
+          uses: crazy-max/ghaction-docker-meta@v1
           with:
-            images: ${{ env.IMAGE }}
-            tags: |
-              type=ref,event=branch
-              type=ref,event=pr
-              type=semver,pattern={{version}}
-              type=semver,pattern={{major}}.{{minor}}
+            images: l7r7/sample
+            tag-custom: latest
+            tag-semver: |
+              {{raw}}
+
 
         - name: Build image and push to Docker Hub
           uses: docker/build-push-action@v2
