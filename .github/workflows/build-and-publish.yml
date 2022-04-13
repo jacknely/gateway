@@ -1,6 +1,11 @@
 name: Build and Publish
 
-on: push
+on:
+  push:
+    branches: [main]
+  pull_request:
+  release:
+    types: [published]
 
 jobs:
   build-and-push:
