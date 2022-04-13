@@ -33,6 +33,7 @@ jobs:
           uses: docker/build-push-action@v2
           with:
             context: .
+            push: true
             tags: ${{ env.IMAGE }}:latest, ${{ env.IMAGE }}:${{ env.RELEASE_VERSION }}
 
         - name: Image digest
