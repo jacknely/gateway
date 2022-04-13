@@ -1,9 +1,6 @@
 name: Build and Publish
 
-on:
-  push:
-    tags:
-      - "v*.*.*"
+on: push
 
 jobs:
   build-and-push:
@@ -32,7 +29,4 @@ jobs:
           with:
             context: .
             push: ${{ GitHub.event_name != 'pull_request' }}
-            tags: ${{ env.IMAGE }}:latest, ${{ env.IMAGE }}:{{ github.ref }}
-
-        - name: Image digest
-          run: echo ${{ steps.docker_build.outputs.digest }}
+            tags: ${{ env.IMAGE }}:${{ github.event.release.tag_name }}
