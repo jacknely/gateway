@@ -3,10 +3,10 @@ name: Build and Publish
 on:
   push:
     branches: [main]
-  pull_request:
-  release:
+    tags:
+      - 'v*.*.*'
 
-jobs: 
+jobs:
   build-and-push:
     name: Build Docker image and push to repositories
     runs-on: ubuntu-latest
@@ -33,4 +33,12 @@ jobs:
           with:
             context: .
             push: ${{ GitHub.event_name != 'pull_request' }}
-            tags: ${{ env.IMAGE }}:${{ github.event.release.tag_name }}
+            tags: ${{ env.IMAGE }}:latest  #, ${{ env.IMAGE }}:${{ github.ref }}
+
+        - name: Test
+          run: |
+            echo $RELEASE_VERSION
+            echo ${{ env.IMAGE }}:${{ github.ref }}
+
+        - name: Image digest
+          run: echo ${{ steps.docker_build.outputs.digest }}
