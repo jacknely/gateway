@@ -39,7 +39,7 @@ jobs:
           id: meta
           uses: crazy-max/ghaction-docker-meta@v1
           with:
-            images: l7r7/sample
+            images: ${{ env.IMAGE }}
             tag-custom: latest
             tag-semver: |
               {{raw}}
