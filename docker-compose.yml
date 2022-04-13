@@ -5,7 +5,7 @@ services:
     environment:
       APPLICATION_STAGE: dev
     ports:
-      - 8000:8000
+      - 1001:8000
     volumes:
       - ./:/app
     command: gunicorn -c /app/config/gunicorn/dev.py service:app
