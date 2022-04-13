@@ -7,7 +7,7 @@ on:
   release:
     types: [published]
 
-jobs:
+jobs: 
   build-and-push:
     name: Build Docker image and push to repositories
     runs-on: ubuntu-latest
