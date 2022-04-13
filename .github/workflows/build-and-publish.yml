@@ -2,8 +2,9 @@ name: Build and Publish
 
 on:
   push:
-    branches: [main]
-  pull_request:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*'
 
 jobs:
   build-and-push:
@@ -16,6 +17,18 @@ jobs:
     steps:
         - name: Checkout code
           uses: actions/checkout@v2
+
+        - name: Create Release
+          id: create_release
+          uses: actions/create-release@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            tag_name: ${{ github.ref }}
+            release_name: Release ${{ github.ref }}
+            body: tbc
+            draft: false
+            prerelease: false
 
         - name: Set up Docker Buildx
           id: buildx
@@ -43,7 +56,7 @@ jobs:
           with:
             context: .
             push: ${{ GitHub.event_name != 'pull_request' }}
-            tags: ${{ env.IMAGE }}:latest
+            tags: ${{ env.IMAGE }}:latest, ${{ env.IMAGE }}:{{ github.ref }}
             labels: ${{ steps.meta.outputs.labels }}
 
         - name: Image digest
